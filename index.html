@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="google-site-verification" content="TDGnBI31_ul1VX82onM9naqZInznIB2mzZVILSWZRHY" />
   <link rel="icon" type="image/png" href="/favicon.png">
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -15,9 +16,36 @@
   <meta name="twitter:description" content="Try to solve this logic puzzle faster than your friends.">
   <meta name="twitter:image" content="https://gridfill.link/preview.png">
   <meta name="twitter:card" content="summary_large_image" />
-  <title>GridFill Verification</title>
+  <title>Loading GridFill...</title>
 </head>
 <body>
-  <h1>GridFill Verification Page</h1>
+  <h1>Opening GridFill...</h1>
+  <p>If the app doesn't open, <a id="fallback-link" href="#">tap here to download GridFill</a>.</p>
+
+  <script>
+    const appStoreURL = "https://apps.apple.com/app/idYOUR_APP_ID"; // ← replace with your real App Store URL
+    const params = new URLSearchParams(window.location.search);
+    const state = params.get("state");
+
+    // Default fallback link
+    document.getElementById("fallback-link").href = appStoreURL;
+
+    if (state) {
+      const deepLink = `gridfill://board?state=${encodeURIComponent(state)}`;
+
+      // Try to open the app
+      window.location.href = deepLink;
+
+      // Fallback after delay
+      setTimeout(() => {
+        window.location.href = appStoreURL;
+      }, 1000);
+    } else {
+      // No state param? Redirect to App Store after short delay
+      setTimeout(() => {
+        window.location.href = appStoreURL;
+      }, 1200);
+    }
+  </script>
 </body>
 </html>

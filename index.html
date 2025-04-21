@@ -23,15 +23,15 @@
   <p>If the app doesn't open, <a id="fallback-link" href="#">tap here to download GridFill</a>.</p>
 
   <script>
-    const appStoreURL = "https://apps.apple.com/app/idYOUR_APP_ID"; // ← replace with your real App Store URL
+    const appStoreURL = "https://gridfill.link";
     const params = new URLSearchParams(window.location.search);
-    const state = params.get("state");
+    const state = params.get("s");
 
     // Default fallback link
     document.getElementById("fallback-link").href = appStoreURL;
 
     if (state) {
-      const deepLink = `gridfill://board?state=${encodeURIComponent(state)}`;
+      const deepLink = `gridfill://board?s=${encodeURIComponent(state)}`;
 
       // Try to open the app
       window.location.href = deepLink;
@@ -39,7 +39,7 @@
       // Fallback after delay
       setTimeout(() => {
         window.location.href = appStoreURL;
-      }, 1000);
+      }, 2000);
     } else {
       // No state param? Redirect to App Store after short delay
       setTimeout(() => {

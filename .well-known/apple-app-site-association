@@ -4,7 +4,7 @@
     "details": [
       {
         "appID": "FA2A2WXL7X.com.Platypus.GridFill",
-        "paths": [ "/board/*" ]
+        "paths": [ "/b/*" ]
       }
     ]
   }

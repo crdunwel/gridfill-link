@@ -7,15 +7,15 @@
   <link rel="icon" type="image/png" href="/favicon.png">
   <link rel="apple-touch-icon" href="/favicon.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta property="og:title" content="GridFill Game" />
+  <meta property="og:title" content="GridFill: Endless Puzzle" />
   <meta property="og:description" content="Check out this puzzle challenge!" />
   <meta property="og:image" content="https://gridfill.link/preview.png" />
   <meta property="og:url" content="https://gridfill.link" />
-  <meta name="twitter:title" content="GridFill — Puzzle Challenge">
+  <meta name="twitter:title" content="GridFill: Endless Puzzle">
   <meta name="twitter:description" content="Try to solve this puzzle faster than your friends.">
   <meta name="twitter:image" content="https://gridfill.link/preview.png">
   <meta name="twitter:card" content="summary_large_image" />
-  <title>Loading GridFill...</title>
+  <title>GridFill: Endless Puzzle</title>
   <style>
     body {
       margin: 0;
@@ -76,12 +76,8 @@
       background: #00ffe1;
       animation: blink 1s infinite alternate;
     }
-    .dot:nth-child(2) {
-      animation-delay: .2s;
-    }
-    .dot:nth-child(3) {
-      animation-delay: .4s;
-    }
+    .dot:nth-child(2) { animation-delay: .2s; }
+    .dot:nth-child(3) { animation-delay: .4s; }
     @keyframes blink {
       0% { opacity: 1; transform: scale(1); }
       100% { opacity: .3; transform: scale(.7); }
@@ -94,7 +90,7 @@
 </head>
 <body>
   <img src="/favicon.png" alt="GridFill icon" class="grid-icon" />
-  <h1>Launching GridFill...</h1>
+  <h1 id="main-title">Launching GridFill...</h1>
   <p id="status-text">Loading your puzzle — launching the app…</p>
   <div id="loading-dots" class="loading-animation">
     <div class="dot"></div><div class="dot"></div><div class="dot"></div>
@@ -107,8 +103,14 @@
   </a>
 
   <script>
-    const appStoreURL = "https://apps.apple.com/";  // Replace with your real App Store link!
-    const deepScheme  = "gridfill://b/";
+    const appStoreURL = "https://apps.apple.com/";  // <-- real App Store link
+    const deepScheme = "gridfill://b/";
+
+    const mainTitle = document.getElementById("main-title");
+    const statusText = document.getElementById("status-text");
+    const loadingDots = document.getElementById("loading-dots");
+    const fallbackLink = document.getElementById("fallback-link");
+    const appStoreLink = document.getElementById("app-store-link");
 
     const path = window.location.pathname;
     const encoded = path.startsWith("/b/") && path.length > 3
@@ -118,20 +120,19 @@
     if (encoded) {
       // Deep link flow
       const deepLink = deepScheme + encodeURIComponent(encoded);
-      document.getElementById("fallback-link").href = appStoreURL;
+      fallbackLink.href = appStoreURL;
 
-      // Try to open the app
       window.location.href = deepLink;
 
-      // After delay, show fallback button
       setTimeout(() => {
-        document.getElementById("fallback-link").classList.add('show');
+        fallbackLink.classList.add('show');
       }, 2000);
     } else {
-      // No deep link, show App Store download badge
-      document.getElementById("status-text").innerText = "Get GridFill on the App Store";
-      document.getElementById("loading-dots").style.display = "none";
-      document.getElementById("app-store-link").style.display = "inline-block";
+      // No deep link — show App Store badge immediately
+      mainTitle.innerText = "Download GridFill";
+      statusText.innerText = "Get GridFill on the App Store";
+      loadingDots.remove(); // Fully remove the blinking dots
+      appStoreLink.style.display = "inline-block";
     }
   </script>
 </body>

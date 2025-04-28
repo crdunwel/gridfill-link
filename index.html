@@ -41,7 +41,7 @@
       opacity: .8;
     }
     a#fallback-link {
-      display: none; /* Hidden initially */
+      display: none;
       margin-top: 20px;
       padding: 10px 20px;
       background: #00ffe1;
@@ -77,48 +77,62 @@
       animation: blink 1s infinite alternate;
     }
     .dot:nth-child(2) {
-      animation-delay: .2s
+      animation-delay: .2s;
     }
     .dot:nth-child(3) {
-      animation-delay: .4s
+      animation-delay: .4s;
     }
     @keyframes blink {
-      0% {opacity: 1; transform: scale(1)}
-      100% {opacity: .3; transform: scale(.7)}
+      0% { opacity: 1; transform: scale(1); }
+      100% { opacity: .3; transform: scale(.7); }
+    }
+    .app-store-badge {
+      width: 160px;
+      margin-top: 30px;
     }
   </style>
 </head>
 <body>
   <img src="/favicon.png" alt="GridFill icon" class="grid-icon" />
   <h1>Launching GridFill...</h1>
-  <p>Loading your puzzle — launching the app…</p>
-  <div class="loading-animation">
+  <p id="status-text">Loading your puzzle — launching the app…</p>
+  <div id="loading-dots" class="loading-animation">
     <div class="dot"></div><div class="dot"></div><div class="dot"></div>
   </div>
   <a id="fallback-link" href="#">Tap here if nothing happens</a>
 
+  <!-- App Store badge — hidden unless needed -->
+  <a id="app-store-link" href="https://apps.apple.com/" target="_blank" style="display:none;">
+    <img src="apple_store.svg" alt="Download on the App Store" class="app-store-badge" />
+  </a>
+
   <script>
-    /* ——— configuration ——— */
-    const appStoreURL = "https://gridfill.link";  // Replace with real App Store URL later
+    const appStoreURL = "https://apps.apple.com/";  // Replace with your real App Store link!
     const deepScheme  = "gridfill://b/";
 
-    /* ——— extract encoded puzzle from `/b/<state>` ——— */
-    const path    = window.location.pathname;
+    const path = window.location.pathname;
     const encoded = path.startsWith("/b/") && path.length > 3
                     ? path.slice(3)
                     : "";
 
-    /* ——— build deep link ——— */
-    const deepLink = encoded ? (deepScheme + encodeURIComponent(encoded)) : appStoreURL;
-    document.getElementById("fallback-link").href = appStoreURL;
+    if (encoded) {
+      // Deep link flow
+      const deepLink = deepScheme + encodeURIComponent(encoded);
+      document.getElementById("fallback-link").href = appStoreURL;
 
-    /* ——— attempt deep link ——— */
-    window.location.href = deepLink;
+      // Try to open the app
+      window.location.href = deepLink;
 
-    /* ——— show fallback button after delay (no redirect) ——— */
-    setTimeout(() => {
-      document.getElementById("fallback-link").classList.add('show');
-    }, 2000);
+      // After delay, show fallback button
+      setTimeout(() => {
+        document.getElementById("fallback-link").classList.add('show');
+      }, 2000);
+    } else {
+      // No deep link, show App Store download badge
+      document.getElementById("status-text").innerText = "Get GridFill on the App Store";
+      document.getElementById("loading-dots").style.display = "none";
+      document.getElementById("app-store-link").style.display = "inline-block";
+    }
   </script>
 </body>
 </html>

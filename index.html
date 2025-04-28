@@ -23,12 +23,22 @@
       font-family: 'Helvetica Neue', sans-serif;
       background: #0a0a0a;
       color: #f4f4f4;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header, main, footer {
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      height: 100vh;
       text-align: center;
+    }
+    header {
+      margin-top: 40px;
+    }
+    main {
+      flex-grow: 1;
+      justify-content: center;
     }
     h1 {
       font-size: 2rem;
@@ -86,21 +96,44 @@
       width: 160px;
       margin-top: 30px;
     }
+    footer {
+      margin-bottom: 20px;
+      font-size: 0.8rem;
+      opacity: 0.6;
+    }
+    footer a {
+      color: #f4f4f4;
+      text-decoration: none;
+      margin: 0 10px;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
-  <img src="/favicon.png" alt="GridFill icon" class="grid-icon" />
-  <h1 id="main-title">Launching GridFill...</h1>
-  <p id="status-text">Loading your puzzle — launching the app…</p>
-  <div id="loading-dots" class="loading-animation">
-    <div class="dot"></div><div class="dot"></div><div class="dot"></div>
-  </div>
-  <a id="fallback-link" href="#">Tap here if nothing happens</a>
 
-  <!-- App Store badge — hidden unless needed -->
-  <a id="app-store-link" href="https://apps.apple.com/" target="_blank" style="display:none;">
-    <img src="apple_store.svg" alt="Download on the App Store" class="app-store-badge" />
-  </a>
+  <header>
+    <img src="/favicon.png" alt="GridFill icon" class="grid-icon" />
+  </header>
+
+  <main>
+    <h1 id="main-title">Launching GridFill...</h1>
+    <p id="status-text">Loading your puzzle — launching the app…</p>
+    <div id="loading-dots" class="loading-animation">
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+    <a id="fallback-link" href="#">Tap here if nothing happens</a>
+
+    <!-- App Store badge — hidden unless needed -->
+    <a id="app-store-link" href="https://apps.apple.com/" target="_blank" style="display:none;">
+      <img src="apple_store.svg" alt="Download on the App Store" class="app-store-badge" />
+    </a>
+  </main>
+
+  <footer>
+    <a href="/policy">Privacy Policy</a> | <a href="/support">Support</a>
+  </footer>
 
   <script>
     const appStoreURL = "https://apps.apple.com/";  // <-- real App Store link
@@ -128,10 +161,10 @@
         fallbackLink.classList.add('show');
       }, 2000);
     } else {
-      // No deep link — show App Store badge immediately
+      // No deep link - Show App Store download version
       mainTitle.innerText = "Download GridFill";
       statusText.innerText = "Get GridFill on the App Store";
-      loadingDots.remove(); // Fully remove the blinking dots
+      loadingDots.remove(); // fully remove blinking dots
       appStoreLink.style.display = "inline-block";
     }
   </script>

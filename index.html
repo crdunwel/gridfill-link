@@ -179,15 +179,24 @@
                     : "";
 
     if (encoded) {
-      // Deep link flow
-      const deepLink = deepScheme + encodeURIComponent(encoded);
-      fallbackLink.href = appStoreURL;
-
-      window.location.href = deepLink;
-
-      setTimeout(() => {
-        fallbackLink.classList.add('show');
-      }, 2000);
+        // Deep link flow
+        const deepLink = deepScheme + encodeURIComponent(encoded);
+        fallbackLink.href = appStoreURL;
+      
+        window.location.href = deepLink;
+      
+        setTimeout(() => {
+          fallbackLink.classList.add('show');
+        }, 2000);
+      
+        // Override canonical to match full puzzle URL
+        const canonicalTag = document.querySelector("link[rel='canonical']") || document.createElement('link');
+        canonicalTag.setAttribute('rel', 'canonical');
+        canonicalTag.setAttribute('href', window.location.href);
+      
+        if (!canonicalTag.parentNode) {
+          document.head.appendChild(canonicalTag);
+        }
     } else {
       // No deep link - Show App Store download version
       mainTitle.innerText = "Download GridFill";
